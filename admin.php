@@ -76,15 +76,16 @@
                     </div>
                 </div>
             </nav>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-                data-whatever="@mdo">Thêm khai báo</button>
-
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            <button type="button" name="add" class="btn btn-primary mb-5 float-right" data-toggle="modal"
+                data-target="#form-modal"><i class="fas fa-plus"></i>Thêm khai báo</button>
+            <!-- <button type="button" name="add" class="btn btn-primary mb-5 float-right">
+                <i class="fas fa-plus"></i>Thêm khai báo</button> -->
+            <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="form-modal-label"
                 aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Khai báo y tế</h5>
+                            <h5 class="modal-title" id="form-modal-label">Khai báo y tế</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -141,7 +142,7 @@
                                         <label for="">Quốc tịch
                                             <em class="text-danger" style="line-height: 1">(*)</em>
                                         </label>
-                                        <select name="inputNation" class="form-control">
+                                        <select name="inputNation" id="inputNation" class="form-control">
                                             <option value="">Chọn</option>
                                             <option value="Vietnam">Việt Nam</option>
                                             <option value="Laos">Lào</option>
@@ -224,7 +225,7 @@ foreach ($result as $row) {
                                                 <div class="form-check d-inline-block">
                                                     <input class="form-check-input" type="radio"
                                                         name="showCountryPassing" value="No" id="showCountryPassing0"
-                                                        checked>
+                                                        checked="checked">
                                                     <label class="form-check-label" for="showCountryPassing0">
                                                         <span>Không</span>
                                                     </label>
@@ -356,7 +357,10 @@ foreach ($result as $row) {
                                     </div>
                                 </div>
                                 <div class="btn-submit-box text-center">
-                                    <button type="submit" class="mt-3 btn btn-lg btn-danger">Lưu tờ khai</button>
+                                    <input type="hidden" name="form_id" id="form_id" />
+                                    <input type="hidden" name="isEdit" id="isEdit" />
+                                    <button type="submit" name="submit-btn" class="mt-3 btn btn-lg btn-danger">Lưu tờ
+                                        khai</button>
                                 </div>
                             </form>
                         </div>
@@ -364,16 +368,87 @@ foreach ($result as $row) {
                     </div>
                 </div>
             </div>
+            <br /><br />
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="filter_tc_covid">Triệu chứng</label>
+                    <div class="form-group">
+                        <select name="filter_tc_covid" id="filter_tc_covid" class="form-control" required>
+                            <option value="">Có triệu chứng hay không?</option>
+                            <option value="Yes">Có</option>
+                            <option value="No">Không</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="filter_tx_covid">Tiếp xúc Covid</label>
+                        <select name="filter_tx_covid" id="filter_tx_covid" class="form-control" required>
+                            <option value="">Có tiếp xúc với người nghi nhiễm Covid?</option>
+                            <option value="Yes">Có-Yes</option>
+                            <option value="No">Không-No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group pt-4">
+                        <button type="button" name="filter" id="filter" class="btn btn-info">
+                            <i class="fas fa-filter"></i> Lọc</button>
+                        <button type="button" name="exit-filter" id="exit-filter" class="btn btn-danger">
+                            <i class="fas fa-backspace"></i> Bỏ Lọc</button>
+                    </div>
+                </div>
+            </div>
+            <div id="data" class=''>
+                <table id="form-table" class="table table-bordered table-striped" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th width="10%">Ngày</th>
+                            <th width="10%">CMT/CCCD</th>
+                            <th width="20%">Họ tên</th>
+                            <th width="10%">Ngày sinh</th>
+                            <th width="10%">SĐT</th>
+                            <th width="15%">TC Covid</th>
+                            <th width="10%">TX Covid</th>
+                            <th width="15%"></th>
+                        </tr>
+                    </thead>
+                    <!-- <tbody>
+                        <tr>
+
+                            <td>15/12/2021</td>
+                            <td>0123456789</td>
+                            <td class='text-uppercase'>Lưu Quang Tùng</td>
+                            <td>15/09/2000</td>
+                            <td>0961137015</td>
+                            <td>sốt, ho, đau họng, mệt mỏi</td>
+                            <td>Yes</td>
+                            <td>
+                                <button type="button" class="btn btn-info"><i class="far fa-eye"></i></button>
+                                <button type="button" class="btn btn-warning"><i class="fas fa-edit"></i></button>
+                                <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                    </tbody> -->
+                    <tfoot>
+                        <tr>
+                            <th>Ngày</th>
+                            <th>CMT/CCCD</th>
+                            <th>Họ tên</th>
+                            <th>Ngày sinh</th>
+                            <th>SĐT</th>
+                            <th>TC Covid</th>
+                            <th>TX Covid</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
         </div>
     </div>
 </body>
-<script>
-$(document).ready(function() {
-    $('#sidebarCollapse').on('click', function() {
-        $('#sidebar').toggleClass('active');
-    });
-});
-</script>
-s<script src="js/form.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/form.js"></script>
 
 </html>

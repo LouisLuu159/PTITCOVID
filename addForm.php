@@ -73,28 +73,27 @@
   $dob = $dob->format('Y-m-d');
   include("connection.php");
   
-  
   $check_exist_user_query = "SELECT * FROM user WHERE ID = :ID";
   $stmt = $conn->prepare($check_exist_user_query);
   $stmt->bindValue(":ID", $id);
   $stmt->execute();
   $count = $stmt->rowCount();
   
-  
-  
   if($count == 0){
-     // insert
-     $insert_user_query = "INSERT INTO user VALUES (:id, :name, :dob, :gender, :nation, :phone, 
-     :email, :addrDetail, :provinceID, :districtID, :wardID);";
-     $stmt = $conn->prepare($insert_user_query);
+    // insert
+    $insert_user_query = "INSERT INTO user VALUES (:id, :name, :dob, :gender, :nation, :phone, 
+    :email, :addrDetail, :provinceID, :districtID, :wardID);";
+    $stmt = $conn->prepare($insert_user_query);
   }
   else{
-    $insert_user_query ="UPDATE user SET name = :name, dob = :dob, gender = :gender,
-      nationality = :nation, provinceID = :provinceID , districtID = :districtID , 
-      wardID = :wardID, addressDetail = :addrDetail, phone= :phone, email= :email
-      WHERE id = :id;";
-     $stmt = $conn->prepare($insert_user_query);
+    $update_user_query ="UPDATE user SET name = :name, dob = :dob, gender = :gender,
+    nationality = :nation, provinceID = :provinceID , districtID = :districtID , 
+    wardID = :wardID, addressDetail = :addrDetail, phone= :phone, email= :email
+    WHERE id = :id;";
+    $stmt = $conn->prepare($update_user_query);
   }
+ 
+  
   
   $stmt->bindValue(":id", $id);
   $stmt->bindValue(":name", $name);
@@ -111,12 +110,20 @@
 
   
   $date = date("Y/m/d");
-  
-  $insert_form_query = "INSERT INTO form (`countryPassing`, `symptom`, `touchCovidPatient`, `touchPeopleFromCovidCountry`, `touchPeopleHasCovidSymptom`, `userID`, `date`)
-                             VALUES (?,?,?,?,?,?,?)";
-  $stmt= $conn->prepare($insert_form_query); 
-  $stmt->execute([$inputCountryPassing,  $inputSymptom, $touchCovidPatient, $touchPeopleFromCovidCountry,
+  if(!isset($_POST['isEdit'])){// not update form, just add form
+    $insert_form_query = "INSERT INTO form (`countryPassing`, `symptom`, `touchCovidPatient`, 
+    `touchPeopleFromCovidCountry`, `touchPeopleHasCovidSymptom`, `userID`, `date`) VALUES (?,?,?,?,?,?,?) ";
+    $stmt= $conn->prepare($insert_form_query); 
+    $stmt->execute([$inputCountryPassing,  $inputSymptom, $touchCovidPatient, $touchPeopleFromCovidCountry,
                       $touchPeopleHasCovidSymptom, $id, $date]);
+  }else{// update form
+    $update_form_query = "UPDATE form SET countryPassing = ?, symptom = ?, touchCovidPatient = ?, 
+    touchPeopleFromCovidCountry = ?, touchPeopleHasCovidSymptom = ?, userID = ?, date = ? WHERE id = ? ";
+    $stmt= $conn->prepare($update_form_query); 
+    $stmt->execute([$inputCountryPassing,  $inputSymptom, $touchCovidPatient, $touchPeopleFromCovidCountry,
+                      $touchPeopleHasCovidSymptom, $id, $date, $_POST['form_id']]);
+  }
+  
   
   // echo "success";
   // $_SESSION['status'] = "success";

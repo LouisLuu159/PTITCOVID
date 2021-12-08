@@ -76,20 +76,28 @@ $(function () {
 
 $(document).ready(function () {
   $("input[name='showSymptom']").click(() => {
-    val = $("input[name='showSymptom']:checked").val();
-    if (val === "Yes") {
-      $("#inputSymptom").show();
-    } else {
-      $("#inputSymptom").hide();
-    }
+    $("input[name='showSymptom']").change();
   });
 
   $("input[name='showCountryPassing']").click(() => {
+    $("input[name='showCountryPassing']").change();
+  });
+
+  $("input[name='showCountryPassing']").change(() => {
     val = $("input[name='showCountryPassing']:checked").val();
     if (val === "Yes") {
       $("#inputCountryPassing").show();
     } else {
       $("#inputCountryPassing").hide();
+    }
+  });
+
+  $("input[name='showSymptom']").change(() => {
+    val = $("input[name='showSymptom']:checked").val();
+    if (val === "Yes") {
+      $("#inputSymptom").show();
+    } else {
+      $("#inputSymptom").hide();
     }
   });
 
