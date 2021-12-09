@@ -110,7 +110,7 @@
 
   
   $date = date("Y/m/d");
-  if(!isset($_POST['isEdit'])){// not update form, just add form
+  if(!isset($_POST['isEdit']) || $_POST['isEdit'] == ""){// not update form, just add form
     $insert_form_query = "INSERT INTO form (`countryPassing`, `symptom`, `touchCovidPatient`, 
     `touchPeopleFromCovidCountry`, `touchPeopleHasCovidSymptom`, `userID`, `date`) VALUES (?,?,?,?,?,?,?) ";
     $stmt= $conn->prepare($insert_form_query); 

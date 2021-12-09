@@ -29,8 +29,12 @@
   if(isset($_POST['search']['value'])){// $_POST['search']['value']: Search value
 	  $query .= 'AND (name LIKE "%'. $_POST['search']['value'] .'%" ';
     $query .= 'OR userID LIKE "%'. $_POST['search']['value'] .'%" ';
+    $query .= 'OR symptom LIKE "%'. $_POST['search']['value'] .'%" ';
     $query .= ')';
   }
+  $statement = $conn->prepare($query);
+  $statement->execute();
+  $totalRecordsWithFilter = $statement->rowCount();//Total number of records with filtering
   
   $columnName = array('date','userID','name', 'dob', 'phone', 'symptom', 'TXcovid');
   if(isset($_POST['order'])){
@@ -53,8 +57,6 @@
   $statement = $conn->prepare($query);
   $statement->execute();
   $result = $statement->fetchAll();
-
-  $totalRecordsWithFilter = $statement->rowCount();//Total number of records with filtering
   
   $get_all_query = "SELECT * FROM form";
   $statement = $conn->prepare($get_all_query);
@@ -98,8 +100,8 @@
 
   $response = array(
 	"draw"				=>	intval($_POST["draw"]),
-	"recordsTotal"		=> 	$totalRecordsWithFilter,
-	"recordsFiltered"	=>	$totalRecordsWithoutFilter,
+	"recordsTotal"		=> 	$totalRecordsWithoutFilter,
+	"recordsFiltered"	=>	$totalRecordsWithFilter,
 	"data"				=>	$data
   );
 

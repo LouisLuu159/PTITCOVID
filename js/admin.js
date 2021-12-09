@@ -4,9 +4,22 @@ $(document).ready(function () {
     $("#sidebar").toggleClass("active");
   });
 
+  function resetForm() {
+    $("#declaration_form")[0].reset();
+    $("#inputCountryPassing textarea").text("");
+    $("input[name= 'showCountryPassing'][value='No']").prop("checked", true);
+    $("input[name= 'showCountryPassing'][value='Yes']").prop("checked", false);
+    $("input[name='showCountryPassing']").change();
+    $("#inputSymptom textarea").text("");
+    $("input[name= 'showSymptom'][value='No']").prop("checked", true);
+    $("input[name= 'showSymptom'][value='Yes']").prop("checked", false);
+    $("input[name='showSymptom']").change();
+    $("#isEdit").val("");
+  }
+
   $("button[name='add']").click(function () {
     console.log("Hit add button");
-    $("#declaration_form")[0].reset();
+    resetForm();
     $(".modal-title").text("Thêm Khai báo y tế");
     $("#form-modal button[name='submit-btn']").text("Lưu tờ khai");
     $("#form-modal button[name='submit-btn']").show();
@@ -18,9 +31,9 @@ $(document).ready(function () {
       language: {
         lengthMenu: "Hiển thị _MENU_ bản ghi",
         zeroRecords: "Không tìm thấy",
-        info: "Trang _PAGE_ / _PAGES_",
+        info: "Trang _START_ / _END_ - Tổng: _TOTAL_ bản ghi",
         infoEmpty: "Không có bản ghi nào",
-        infoFiltered: "(_MAX_ bản ghi)",
+        infoFiltered: "(lọc từ _MAX_ bản ghi)",
       },
 
       processing: true,
@@ -201,7 +214,7 @@ $(document).ready(function () {
         console.log("receive data");
         $("#form_id").val(form_id);
         $("#isEdit").val("Yes");
-        $("#declaration_form")[0].reset();
+        resetForm();
         $("#form-modal").modal("show");
         $(".modal-title").text("Sửa Khai báo y tế");
         $("#form-modal button[name='submit-btn']").text("Lưu thay đổi");
@@ -224,7 +237,7 @@ $(document).ready(function () {
       dataType: "json",
       success: function (data) {
         console.log("receive data");
-        $("#declaration_form")[0].reset();
+        resetForm();
         $("#form-modal").modal("show");
         $(".modal-title").text("Khai báo y tế");
         $("#form-modal button[name='submit-btn']").hide();
